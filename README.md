@@ -1,9 +1,10 @@
 # ahwr-backoffice-perf-tests
 
-A JMeter based test runner for the CDP Platform.
+This repository contains the performance test suite for AHWR Backoffice service. 
+Tests are executed using a JMeter-based runner within the CDP Platform.
 
 - [Licence](#licence)
-  - [About the licence](#about-the-licence)
+- [About the licence](#about-the-licence)
 
 ## Build
 
@@ -15,7 +16,46 @@ A successful build results in a Docker container that is capable of running your
 The performance test suites are designed to be run from the CDP Portal.
 The CDP Platform runs test suites in much the same way it runs any other service, it takes a docker image and runs it as an ECS task, automatically provisioning infrastructure as required.
 
-## Local Testing with Docker Compose
+**Environment variables and their values set in CDP portal for a standard run:**
+```bash
+THREAD_COUNT=20
+RAMPUP_SECONDS=10
+DURATION_SECONDS=300
+USER_PAGE_DELAY=3500
+LOOP_COUNT=1
+CSV_RECYCLE_ON_EOF=false
+CSV_STOP_ON_EOF=true
+```
+These values can be adjusted to support different load profiles, including load and soak testing scenarios.
+
+## Local test execution for an environment
+Install Jmeter on the local machine if you need to open and edit the jmx file from this repo in Jmeter UI.
+
+Make sure the following environments values are set in the .env file:
+
+- ENVIRONMENT=perf-test
+- RUN_ENVIRONMENT=local
+- DEVELOPER_API_KEY = API key value for the logged-in user from CDP portal
+- TEST_SCENARIO=ahwr-performance-tests (This is the jmx file name present in scenarios folder)
+- THREAD_COUNT=1
+- RAMPUP_SECONDS=1
+- DURATION_SECONDS=30
+- USER_PAGE_DELAY=500
+- LOOP_COUNT=1
+- CSV_RECYCLE_ON_EOF=false
+- CSV_STOP_ON_EOF=true
+
+Now run the command in a terminal from the project directory
+
+```bash
+sh ./local-test-runner.sh
+```
+
+The test runs locally for 30 seconds with a single user, based on the configuration above. High-load testing is not recommended in a local environment; local execution should be used only for scripting and debugging purposes. Once the test finishes, an HTML report is generated in the reports folder.
+
+# The sections below are not relevant to AHWR performance tests and come from the template repository.
+
+## Local Testing with Docker Compose - Not applicable for ahwr-backoffice-perf-tests
 
 You can run the entire performance test stack locally using Docker Compose, including LocalStack, Redis, and the target service. This is useful for development, integration testing, or verifying your test scripts **before committing to `main`**, which will trigger GitHub Actions to build and publish the Docker image.
 
@@ -72,7 +112,7 @@ This is the service under test, which must expose a `/health` endpoint and liste
 docker compose up --build
 ```
 
-## Local Testing with LocalStack
+## Local Testing with LocalStack - Not applicable for ahwr-backoffice-perf-tests
 
 ### Build a new Docker image
 ```
