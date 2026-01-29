@@ -51,6 +51,7 @@ jmeter -n \
 -JTHREAD_COUNT="${THREAD_COUNT}" \
 -JDURATION_SECONDS="${DURATION_SECONDS}" \
 -JLOOP_COUNT="${LOOP_COUNT}" \
+-JSETUP_LOOP_COUNT="${SETUP_LOOP_COUNT}" \
 -JCSV_RECYCLE_ON_EOF="${CSV_RECYCLE_ON_EOF}" \
 -JCSV_STOP_ON_EOF="${CSV_STOP_ON_EOF}" \
 -Jdomain_ui="$SERVICE_ENDPOINT_UI" \
@@ -58,6 +59,11 @@ jmeter -n \
 -Jport="${SERVICE_PORT}" \
 -Jprotocol="${SERVICE_URL_SCHEME}"
 test_exit_code=$?
+
+# Switching from dev auth to normal auth for backoffice
+curl -sS -L --fail \
+  -o /dev/null \
+  "${SERVICE_ENDPOINT_BO}/login?userId=perftestoff"
 
 cat ${LOGFILE}
 

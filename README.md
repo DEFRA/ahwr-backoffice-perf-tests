@@ -23,10 +23,13 @@ RAMPUP_SECONDS=10
 DURATION_SECONDS=300
 USER_PAGE_DELAY=3500
 LOOP_COUNT=1
+SETUP_LOOP_COUNT=1
 CSV_RECYCLE_ON_EOF=false
 CSV_STOP_ON_EOF=true
 ```
 These values can be adjusted to support different load profiles, including load and soak testing scenarios.
+
+The `SETUP_LOOP_COUNT` decides how many agreements and claims can be created in the set up thread before the main thread is run for the backoffice journeys. Currently the maximum value for this is 30.
 
 ## Local test execution for an environment
 Install Jmeter on the local machine if you need to open and edit the jmx file from this repo in Jmeter UI.
@@ -42,6 +45,7 @@ Make sure the following environments values are set in the .env file:
 - DURATION_SECONDS=30
 - USER_PAGE_DELAY=500
 - LOOP_COUNT=1
+- SETUP_LOOP_COUNT=1
 - CSV_RECYCLE_ON_EOF=false
 - CSV_STOP_ON_EOF=true
 

@@ -32,6 +32,7 @@ RAMPUP_SECONDS=${RAMPUP_SECONDS:-1}
 DURATION_SECONDS=${DURATION_SECONDS:-60}
 USER_PAGE_DELAY=${USER_PAGE_DELAY:-100}
 LOOP_COUNT=${LOOP_COUNT:--1}
+SETUP_LOOP_COUNT=${SETUP_LOOP_COUNT:-1}
 
 # Target service
 RUN_ENVIRONMENT=${RUN_ENVIRONMENT:-perf-test}
@@ -58,6 +59,7 @@ jmeter -n \
 -JTHREAD_COUNT="${THREAD_COUNT}" \
 -JDURATION_SECONDS="${DURATION_SECONDS}" \
 -JLOOP_COUNT="${LOOP_COUNT}" \
+-JSETUP_LOOP_COUNT="${SETUP_LOOP_COUNT}" \
 -JCSV_RECYCLE_ON_EOF="${CSV_RECYCLE_ON_EOF}" \
 -JCSV_STOP_ON_EOF="${CSV_STOP_ON_EOF}" \
 -Jdomain_ui="$SERVICE_ENDPOINT_UI" \
@@ -68,9 +70,14 @@ jmeter -n \
 test_exit_code=$?
 
 if [ "$test_exit_code" -eq 0 ]; then
-  echo "JMeter run completed successfully"
+    echo "JMeter run completed successfully"
 else
-  echo "JMeter run failed with exit code $test_exit_code"
+    echo "JMeter run failed with exit code $test_exit_code"
 fi
+
+# Switching from dev auth to normal auth for backoffice
+curl -sS -L --fail \
+-o /dev/null \
+"${SERVICE_ENDPOINT_BO}/login?userId=perftestoff"
 
 exit $test_exit_code
