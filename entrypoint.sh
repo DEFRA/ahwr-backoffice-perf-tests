@@ -62,8 +62,9 @@ test_exit_code=$?
 
 # Switching from dev auth to normal auth for backoffice
 curl -sS -L --fail \
-  -o /dev/null \
-  "${SERVICE_ENDPOINT_BO}/login?userId=perftestoff"
+--connect-timeout 2 \
+-o /dev/null \
+"${SERVICE_ENDPOINT_BO}/login?userId=perftestoff"
 
 cat ${LOGFILE}
 
