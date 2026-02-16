@@ -60,12 +60,6 @@ jmeter -n \
 -Jprotocol="${SERVICE_URL_SCHEME}"
 test_exit_code=$?
 
-# Switching from dev auth to normal auth for backoffice
-curl -sS -L --fail \
---connect-timeout 2 \
--o /dev/null \
-"${SERVICE_ENDPOINT_BO}/login?userId=perftestoff"
-
 cat ${LOGFILE}
 
 # Publish the results into S3 so they can be displayed in the CDP Portal

@@ -75,10 +75,4 @@ else
     echo "JMeter run failed with exit code $test_exit_code"
 fi
 
-# Switching from dev auth to normal auth for backoffice
-curl -sS -L --fail \
---connect-timeout 2 \
--o /dev/null \
-"${SERVICE_ENDPOINT_BO}/login?userId=perftestoff"
-
 exit $test_exit_code
